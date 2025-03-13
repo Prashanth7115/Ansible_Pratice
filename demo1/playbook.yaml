@@ -1,0 +1,23 @@
+---
+- name: Manage Apache2 Service
+  hosts: all
+  become: yes  # Run tasks with sudo privileges
+  tasks:
+    - name: Check if Apache2 service is running
+      ansible.builtin.service_facts:
+
+    - name: Debug service facts (optional)
+      ansible.builtin.debug:
+        var: ansible_facts.services
+
+    - name: Stop Apache2 if it is running
+      ansible.builtin.service:
+        name: apache2  # Use 'httpd' for CentOS/RHEL
+        state: stopped
+      when: ansible_facts.services['apache2.service'].state == 'running'  # Use 'httpd.service' for CentOS/RHEL
+
+    - name: Start Apache2 if it is stopped
+      ansible.builtin.service:
+        name: apache2  # Use 'httpd' for CentOS/RHEL
+        state: started
+      when: ansible_facts.services['apache2.service'].state == 'stopped'  # Use 'httpd.service' for CentOS/RHEL
