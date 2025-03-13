@@ -1,0 +1,7 @@
+---
+- name: Install Docker on Ubuntu
+  hosts: ubuntu_servers
+  become: true  # Run as sudo
+  tasks:
+    - include_tasks: /mnt/demo3/test/tasks/main.yml
+
